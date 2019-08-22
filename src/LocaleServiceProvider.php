@@ -16,8 +16,8 @@ class LocaleServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
 
         $this->publishes([
-            __DIR__ . '/../config/package.php' => config_path('package.php')
-        ], 'config');
+            __DIR__ . '/../config/locale.php' => config_path('locale.php')
+        ], 'locale');
     }
 
     /**
