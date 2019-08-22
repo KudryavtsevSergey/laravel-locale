@@ -1,0 +1,24 @@
+{
+    "name": "sun/locale",
+    "description": "Store locale in database",
+    "authors": [
+        {
+            "name": "Kudryavtsev Sergey",
+            "email": "invaderman@mail.ru"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Sun\\Locale\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Sun\\Locale\\LocaleServiceProvider"
+            ]
+        }
+    }
+}
