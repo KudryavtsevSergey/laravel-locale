@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'table' => 'locale2',
-    'table_postfix' => '_locale2',
+    'table' => 'locale',
+    'table_postfix' => '_locale',
 ];
