@@ -41,10 +41,15 @@ abstract class LocaleMigration extends Migration
         return "{$this->getTableName()}{$this->locale->tablePostfix()}";
     }
 
+    protected function addForeignField(Blueprint $table, string $keyName)
+    {
+        $table->bigInteger($keyName)->unsigned();
+    }
+
     public function up()
     {
         Schema::create($this->getTableNameWithPostfix(), function (Blueprint $table) {
-            $table->bigInteger($this->getTableForeignKeyName())->unsigned();
+            $this->addForeignField($table, $this->getTableForeignKeyName());
             $table->string($this->locale->foreignColumnName(), 2);
 
             $table->foreign($this->getTableForeignKeyName())
