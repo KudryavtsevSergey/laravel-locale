@@ -3,6 +3,7 @@
 namespace Sun\Locale\Models;
 
 use Illuminate\Database\Eloquent\Model as Eloquent;
+use Sun\Locale\LocaleConfig;
 use Sun\Locale\Traits\JoinNameTrait;
 
 abstract class BaseModel extends Eloquent
@@ -16,7 +17,7 @@ abstract class BaseModel extends Eloquent
 
     private function locales()
     {
-        return $this->allLocales()->wherePivot($this->locale->foreignColumnName(), '=', $this->locale->getLocale());
+        return $this->allLocales()->wherePivot(LocaleConfig::foreignColumnName(), '=', LocaleConfig::getLocale());
     }
 
     private function allLocales()
@@ -24,7 +25,7 @@ abstract class BaseModel extends Eloquent
         $table = $this->getTable();
         $foreignKey = $this->getForeignKey();
 
-        return $this->belongsToMany(Locale::class, "{$table}{$this->locale->tablePostfix()}", $foreignKey, $this->locale->foreignColumnName());
+        return $this->belongsToMany(Locale::class, $table . LocaleConfig::tablePostfix(), $foreignKey, LocaleConfig::foreignColumnName());
     }
 
     public function existLocales()
@@ -34,7 +35,7 @@ abstract class BaseModel extends Eloquent
 
     public function createLocales($attributes = [])
     {
-        $this->allLocales()->attach($this->locale->getLocale(), $attributes);
+        $this->allLocales()->attach(LocaleConfig::getLocale(), $attributes);
     }
 
     public function replaceLocales($attributes = [])

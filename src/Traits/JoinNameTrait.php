@@ -28,7 +28,7 @@ trait JoinNameTrait
 
         $query->leftJoin($table, function (JoinClause $join) use ($foreignTable, $foreignKey, $localTable, $localKey, $tableName) {
             $join->on("{$tableName}.{$foreignKey}", '=', "{$localTable}.{$localKey}")
-                ->where($tableName . LocaleConfig::foreignColumnName(), '=', LocaleConfig::getLocale());
+                ->where($tableName . '.' . LocaleConfig::foreignColumnName(), '=', LocaleConfig::getLocale());
         });
     }
 }
