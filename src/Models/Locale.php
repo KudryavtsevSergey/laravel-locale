@@ -5,6 +5,7 @@ namespace Sun\Locale\Models;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Sun\Locale\LocaleConfig;
 
 /**
  * Class Locale
@@ -27,7 +28,7 @@ class Locale extends Eloquent
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->table = config('locale.table');
+        $this->table = LocaleConfig::tableName();
     }
 
     protected $fillable = [

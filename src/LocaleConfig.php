@@ -4,24 +4,24 @@ namespace Sun\Locale;
 
 use App;
 
-class Locale
+class LocaleConfig
 {
-    public function getLocale()
+    public static function getLocale()
     {
         return App::getLocale();
     }
 
-    public function tableName()
+    public static function tableName()
     {
         return config('locale.table');
     }
 
-    public function tablePostfix()
+    public static function tablePostfix()
     {
         return config('locale.table_postfix');
     }
 
-    public function foreignColumnName()
+    public static function foreignColumnName()
     {
         return 'locale_code';
     }

@@ -28,11 +28,5 @@ class LocaleServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/locale.php', 'locale');
-
-        $this->app->singleton('Locale', function () {
-            return new Locale();
-        });
-
-        $this->app->alias('Locale', Locale::class);
     }
 }

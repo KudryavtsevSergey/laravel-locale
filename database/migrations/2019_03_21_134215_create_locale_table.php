@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Sun\Locale\LocaleConfig;
 
 class CreateLocaleTable extends Migration
 {
@@ -13,7 +14,7 @@ class CreateLocaleTable extends Migration
      */
     public function up()
     {
-        Schema::create(config('locale.table'), function (Blueprint $table) {
+        Schema::create(LocaleConfig::tableName(), function (Blueprint $table) {
             $table->string('code')->primary();
             $table->string('country');
             $table->string('name');
@@ -29,6 +30,6 @@ class CreateLocaleTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists(config('locale.table'));
+        Schema::dropIfExists(LocaleConfig::tableName());
     }
 }
