@@ -5,7 +5,7 @@ namespace Sun\Locale\Models;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use Sun\Locale\Traits\JoinNameTrait;
 
-class BaseModel extends Eloquent
+abstract class BaseModel extends Eloquent
 {
     use JoinNameTrait;
 
