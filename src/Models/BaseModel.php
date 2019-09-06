@@ -10,11 +10,6 @@ abstract class BaseModel extends Eloquent
 {
     use JoinNameTrait;
 
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-    }
-
     private function locales()
     {
         return $this->allLocales()->wherePivot(LocaleConfig::foreignColumnName(), '=', LocaleConfig::getLocale());
