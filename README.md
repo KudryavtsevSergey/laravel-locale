@@ -5,9 +5,11 @@
 cd to project.
 
 ```shell script
-mkdir packages/sun/locale;
+mkdir -p packages/sun
 
-git clone https://github.com/barryvdh/laravel-ide-helper.git
+cd packages/sun
+
+git clone https://github.com/barryvdh/laravel-ide-helper.git locale
 ```
 
 in your composer.json
@@ -35,7 +37,7 @@ After updating composer, add the service provider to the ```providers``` array i
 Sun\Locale\LocaleServiceProvider::class,
 ```
 
-After:
+Then:
 
 ```shell script
 php artisan migrate
