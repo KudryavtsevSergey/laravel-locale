@@ -29,6 +29,12 @@ in your composer.json
 }
 ```
 
+After updating composer, add the service provider to the ```providers``` array in ```config/app.php```
+
+```php
+Sun\Locale\LocaleServiceProvider::class,
+```
+
 After:
 
 ```shell script
