@@ -3,32 +3,39 @@
 namespace Sun\Locale\Traits;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model as Eloquent;
 use Illuminate\Database\Query\JoinClause;
 use Sun\Locale\LocaleConfig;
 
 trait JoinNameTrait
 {
-    /**
-     * @param Builder $query
-     * @param string|null $foreignKey
-     * @param string|null $localKey
-     * @param string|null $foreignTable
-     * @param string|null $localTable
-     * @param string|null $alias
-     */
     protected function joinName(Builder $query, ?string $foreignKey = null, ?string $localKey = null, ?string $foreignTable = null, ?string $localTable = null, ?string $alias = null)
     {
-        $localKey = $localKey ?? $this->getKeyName();
-        $localTable = $localTable ?? $this->getTable();
-        $foreignKey = $foreignKey ?? $this->getForeignKey();
-        $foreignTable = $foreignTable ?? $localTable . LocaleConfig::tablePostfix();
+        $this->joinModelName($query, $this, $foreignKey, $localKey, $foreignTable, $localTable, $alias);
+    }
+
+    protected function joinModelName(Builder $query, Eloquent $model, ?string $foreignKey = null, ?string $localKey = null, ?string $foreignTable = null, ?string $localeTable = null, ?string $alias = null)
+    {
+        $localKey = $localKey ?? $model->getKeyName();
+        $localeTable = $localeTable ?? $model->getTable();
+        $foreignKey = $foreignKey ?? $model->getForeignKey();
+        $foreignTable = $foreignTable ?? $localeTable . LocaleConfig::tablePostfix();
 
         $tableName = is_null($alias) ? $foreignTable : $alias;
-        $table = $foreignTable . (is_null($alias) ? '' : " as {$alias}");
+        $table = $foreignTable . (is_null($alias) ? '' : sprintf(' as %s', $alias));
 
-        $query->leftJoin($table, function (JoinClause $join) use ($foreignTable, $foreignKey, $localTable, $localKey, $tableName) {
-            $join->on("{$tableName}.{$foreignKey}", '=', "{$localTable}.{$localKey}")
-                ->where($tableName . '.' . LocaleConfig::foreignColumnName(), '=', LocaleConfig::getLocale());
+        $query->leftJoin($table, function (JoinClause $join) use ($foreignKey, $localeTable, $localKey, $tableName) {
+            $first = $this->printTableColumn($tableName, $foreignKey);
+            $second = $this->printTableColumn($localeTable, $localKey);
+            $column = $this->printTableColumn($tableName, LocaleConfig::foreignColumnName());
+
+            $join->on($first, '=', $second)
+                ->where($column, '=', LocaleConfig::getLocale());
         });
+    }
+
+    private function printTableColumn(string $table, string $column): string
+    {
+        return sprintf('%s.%s', $table, $column);
     }
 }

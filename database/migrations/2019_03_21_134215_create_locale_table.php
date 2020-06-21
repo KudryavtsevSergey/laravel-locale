@@ -7,11 +7,6 @@ use Sun\Locale\LocaleConfig;
 
 class CreateLocaleTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create(LocaleConfig::tableName(), function (Blueprint $table) {
@@ -23,11 +18,6 @@ class CreateLocaleTable extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists(LocaleConfig::tableName());

@@ -8,16 +8,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Sun\Locale\LocaleConfig;
 
 /**
- * Class Locale
- *
  * @property string $code
  * @property string $country
  * @property string $name
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property Carbon $deleted_at
- *
- * @package Sun\Locale\Models
  */
 class Locale extends Eloquent
 {
