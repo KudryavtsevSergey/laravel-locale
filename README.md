@@ -2,27 +2,14 @@
 
 ## Installation
 
-cd to project.
-
-```shell script
-mkdir -p packages/sun
-
-cd packages/sun
-
-git clone https://github.com/barryvdh/laravel-ide-helper.git locale
-```
-
-in your composer.json
+composer.json
 
 ```json
 {
     "repositories": [
         {
-            "type": "path",
-            "url": "packages/sun/locale",
-            "options": {
-                "symlink": true
-            }
+            "type": "git",
+            "url": "https://github.com/KudryavtsevSergey/laravel-locale.git"
         }
     ],
     "require": {
@@ -34,7 +21,17 @@ in your composer.json
 After updating composer, add the service provider to the ```providers``` array in ```config/app.php```
 
 ```php
-Sun\Locale\LocaleServiceProvider::class,
+[
+    Sun\Locale\LocaleServiceProvider::class,
+];
+```
+
+And add alias:
+```php
+[
+// TODO
+    'Locale' => Sun\Locale\Facade::class,
+];
 ```
 
 Then:
