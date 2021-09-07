@@ -11,8 +11,8 @@ class CreateLocaleTable extends Migration
     {
         Schema::create(LocaleConfig::tableName(), function (Blueprint $table) {
             $table->string('code')->primary();
-            $table->string('country');
-            $table->string('name');
+            $table->string('country', 2)->unique();
+            $table->string('name', 2)->unique();
             $table->timestamps();
             $table->softDeletes();
         });
