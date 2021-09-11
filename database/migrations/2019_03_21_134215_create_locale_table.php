@@ -10,9 +10,9 @@ class CreateLocaleTable extends Migration
     public function up()
     {
         Schema::create(LocaleConfig::tableName(), function (Blueprint $table) {
-            $table->string('code')->primary();
+            $table->string('code', 2)->primary();
             $table->string('country', 2)->unique();
-            $table->string('name', 2)->unique();
+            $table->string('name')->unique();
             $table->timestamps();
             $table->softDeletes();
         });
