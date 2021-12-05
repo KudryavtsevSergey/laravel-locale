@@ -18,7 +18,7 @@ abstract class LocaleMigration extends Migration
 
     protected function getTableForeignKeyName(): string
     {
-        return "{$this->getTableName()}_{$this->getTablePrimaryKeyName()}";
+        return sprintf('%s_%s', $this->getTableName(), $this->getTablePrimaryKeyName());
     }
 
     protected function getLocaleTableFields(Blueprint $table)
@@ -26,9 +26,9 @@ abstract class LocaleMigration extends Migration
         $table->string('name', 255);
     }
 
-    private function getTableNameWithPostfix()
+    private function getTableNameWithPostfix(): string
     {
-        return $this->getTableName() . LocaleConfig::tablePostfix();
+        return sprintf('%s%s', $this->getTableName(), LocaleConfig::tablePostfix());
     }
 
     protected function addForeignField(Blueprint $table, string $keyName)
@@ -36,7 +36,12 @@ abstract class LocaleMigration extends Migration
         $table->bigInteger($keyName)->unsigned();
     }
 
-    public function up()
+    protected function getPrimaryName(): string
+    {
+        return sprintf('%s_primary', $this->getTableNameWithPostfix());
+    }
+
+    public function up(): void
     {
         Schema::create($this->getTableNameWithPostfix(), function (Blueprint $table) {
             $this->addForeignField($table, $this->getTableForeignKeyName());
@@ -49,22 +54,22 @@ abstract class LocaleMigration extends Migration
                 ->onUpdate('cascade');
 
             $table->foreign(LocaleConfig::foreignColumnName())
-                ->references("code")
+                ->references('code')
                 ->on(LocaleConfig::tableName())
                 ->onDelete('restrict')
                 ->onUpdate('cascade');
 
-            $table->primary([$this->getTableForeignKeyName(), LocaleConfig::foreignColumnName()]);
+            $table->primary([$this->getTableForeignKeyName(), LocaleConfig::foreignColumnName()], $this->getPrimaryName());
 
             $this->getLocaleTableFields($table);
         });
     }
 
-    public function down()
+    public function down(): void
     {
         Schema::table($this->getTableNameWithPostfix(), function (Blueprint $table) {
-            $table->dropForeign("{$this->getTableNameWithPostfix()}_{$this->getTableForeignKeyName()}_foreign");
-            $table->dropForeign("{$this->getTableNameWithPostfix()}_" . LocaleConfig::foreignColumnName() . "_foreign");
+            $table->dropForeign(sprintf('%s_%s_foreign', $this->getTableNameWithPostfix(), $this->getTableForeignKeyName()));
+            $table->dropForeign(sprintf('%s_%s_foreign', $this->getTableNameWithPostfix(), LocaleConfig::foreignColumnName()));
         });
 
         Schema::dropIfExists($this->getTableNameWithPostfix());
