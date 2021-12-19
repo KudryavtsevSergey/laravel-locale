@@ -21,9 +21,9 @@ abstract class LocaleMigration extends Migration
         return sprintf('%s_%s', $this->getTableName(), $this->getTablePrimaryKeyName());
     }
 
-    protected function getLocaleTableFields(Blueprint $table)
+    protected function getLocaleTableFields(Blueprint $table): void
     {
-        $table->string('name', 255);
+        $table->string('name');
     }
 
     private function getTableNameWithPostfix(): string
@@ -31,7 +31,7 @@ abstract class LocaleMigration extends Migration
         return sprintf('%s%s', $this->getTableName(), LocaleConfig::tablePostfix());
     }
 
-    protected function addForeignField(Blueprint $table, string $keyName)
+    protected function addForeignField(Blueprint $table, string $keyName): void
     {
         $table->bigInteger($keyName)->unsigned();
     }
@@ -43,7 +43,7 @@ abstract class LocaleMigration extends Migration
 
     public function up(): void
     {
-        Schema::create($this->getTableNameWithPostfix(), function (Blueprint $table) {
+        Schema::create($this->getTableNameWithPostfix(), function (Blueprint $table): void {
             $this->addForeignField($table, $this->getTableForeignKeyName());
             $table->string(LocaleConfig::foreignColumnName(), 2);
 
@@ -67,7 +67,7 @@ abstract class LocaleMigration extends Migration
 
     public function down(): void
     {
-        Schema::table($this->getTableNameWithPostfix(), function (Blueprint $table) {
+        Schema::table($this->getTableNameWithPostfix(), function (Blueprint $table): void {
             $table->dropForeign(sprintf('%s_%s_foreign', $this->getTableNameWithPostfix(), $this->getTableForeignKeyName()));
             $table->dropForeign(sprintf('%s_%s_foreign', $this->getTableNameWithPostfix(), LocaleConfig::foreignColumnName()));
         });
