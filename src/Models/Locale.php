@@ -30,6 +30,6 @@ class Locale extends Eloquent
     protected $fillable = [
         'code',
         'country',
-        'name'
+        'name',
     ];
 }

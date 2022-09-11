@@ -6,7 +6,7 @@ use Illuminate\Support\ServiceProvider;
 
 class LocaleServiceProvider extends ServiceProvider
 {
-    public function boot()
+    public function boot(): void
     {
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
 
@@ -15,7 +15,7 @@ class LocaleServiceProvider extends ServiceProvider
         ], 'locale');
     }
 
-    public function register()
+    public function register(): void
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/locale.php', 'locale');
     }

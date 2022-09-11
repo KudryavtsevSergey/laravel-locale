@@ -9,6 +9,8 @@ use Sun\Locale\LocaleConfig;
 
 abstract class LocaleMigration extends Migration
 {
+    private const FOREIGN_FORMAT = '%s_%s_foreign';
+
     protected abstract function getTableName(): string;
 
     protected function getTablePrimaryKeyName(): string
@@ -50,16 +52,19 @@ abstract class LocaleMigration extends Migration
             $table->foreign($this->getTableForeignKeyName())
                 ->references($this->getTablePrimaryKeyName())
                 ->on($this->getTableName())
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
 
             $table->foreign(LocaleConfig::foreignColumnName())
                 ->references('code')
                 ->on(LocaleConfig::tableName())
-                ->onDelete('restrict')
-                ->onUpdate('cascade');
+                ->restrictOnDelete()
+                ->cascadeOnUpdate();
 
-            $table->primary([$this->getTableForeignKeyName(), LocaleConfig::foreignColumnName()], $this->getPrimaryName());
+            $table->primary([
+                $this->getTableForeignKeyName(),
+                LocaleConfig::foreignColumnName(),
+            ], $this->getPrimaryName());
 
             $this->getLocaleTableFields($table);
         });
@@ -68,8 +73,16 @@ abstract class LocaleMigration extends Migration
     public function down(): void
     {
         Schema::table($this->getTableNameWithPostfix(), function (Blueprint $table): void {
-            $table->dropForeign(sprintf('%s_%s_foreign', $this->getTableNameWithPostfix(), $this->getTableForeignKeyName()));
-            $table->dropForeign(sprintf('%s_%s_foreign', $this->getTableNameWithPostfix(), LocaleConfig::foreignColumnName()));
+            $table->dropForeign(sprintf(
+                self::FOREIGN_FORMAT,
+                $this->getTableNameWithPostfix(),
+                $this->getTableForeignKeyName()
+            ));
+            $table->dropForeign(sprintf(
+                self::FOREIGN_FORMAT,
+                $this->getTableNameWithPostfix(),
+                LocaleConfig::foreignColumnName()
+            ));
         });
 
         Schema::dropIfExists($this->getTableNameWithPostfix());

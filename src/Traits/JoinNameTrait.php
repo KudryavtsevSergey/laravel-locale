@@ -9,13 +9,26 @@ use Sun\Locale\LocaleConfig;
 
 trait JoinNameTrait
 {
-    protected function joinName(Builder $query, ?string $foreignKey = null, ?string $localKey = null, ?string $foreignTable = null, ?string $localTable = null, ?string $alias = null)
-    {
-        $this->joinModelName($query, $this, $foreignKey, $localKey, $foreignTable, $localTable, $alias);
+    protected function joinName(
+        Builder $query,
+        ?string $foreignKey = null,
+        ?string $localKey = null,
+        ?string $foreignTable = null,
+        ?string $localeTable = null,
+        ?string $alias = null
+    ): void {
+        $this->joinModelName($query, $this, $foreignKey, $localKey, $foreignTable, $localeTable, $alias);
     }
 
-    protected function joinModelName(Builder $query, Eloquent $model, ?string $foreignKey = null, ?string $localKey = null, ?string $foreignTable = null, ?string $localeTable = null, ?string $alias = null)
-    {
+    protected function joinModelName(
+        Builder $query,
+        Eloquent $model,
+        ?string $foreignKey = null,
+        ?string $localKey = null,
+        ?string $foreignTable = null,
+        ?string $localeTable = null,
+        ?string $alias = null
+    ): void {
         $localKey = $localKey ?? $model->getKeyName();
         $localeTable = $localeTable ?? $model->getTable();
         $foreignKey = $foreignKey ?? $model->getForeignKey();

@@ -9,10 +9,10 @@ abstract class AbstractLocaleModel extends Eloquent implements Localeable
 {
     use LocaleableTrait;
 
-    protected static function boot()
+    protected static function boot(): void
     {
         parent::boot();
 
-        static::addGlobalScope(new LocaleableScope);
+        static::addGlobalScope(new LocaleableScope());
     }
 }

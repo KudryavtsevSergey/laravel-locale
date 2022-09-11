@@ -38,14 +38,17 @@ trait LocaleableTrait
 
     private function locales(): BelongsToMany
     {
-        return $this->allLocales()->wherePivot(LocaleConfig::foreignColumnName(), '=', LocaleConfig::getLocale());
+        return $this->allLocales()
+            ->wherePivot(LocaleConfig::foreignColumnName(), '=', LocaleConfig::getLocale());
     }
 
     private function allLocales(): BelongsToMany
     {
-        $table = $this->getTable();
-        $foreignKey = $this->getForeignKey();
-
-        return $this->belongsToMany(Locale::class, $table . LocaleConfig::tablePostfix(), $foreignKey, LocaleConfig::foreignColumnName());
+        return $this->belongsToMany(
+            Locale::class,
+            sprintf('%s%s', $this->getTable(), LocaleConfig::tablePostfix()),
+            $this->getForeignKey(),
+            LocaleConfig::foreignColumnName()
+        );
     }
 }

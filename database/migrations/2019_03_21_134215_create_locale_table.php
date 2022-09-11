@@ -7,7 +7,7 @@ use Sun\Locale\LocaleConfig;
 
 class CreateLocaleTable extends Migration
 {
-    public function up()
+    public function up(): void
     {
         Schema::create(LocaleConfig::tableName(), function (Blueprint $table) {
             $table->string('code', 2)->primary();
@@ -18,7 +18,7 @@ class CreateLocaleTable extends Migration
         });
     }
 
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists(LocaleConfig::tableName());
     }

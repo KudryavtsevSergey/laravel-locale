@@ -11,7 +11,7 @@ class LocaleableScope implements Scope
 {
     use JoinNameTrait;
 
-    public function apply(Builder $builder, Eloquent $model)
+    public function apply(Builder $builder, Eloquent $model): void
     {
         $this->joinModelName($builder, $model);
     }
