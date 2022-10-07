@@ -16,8 +16,8 @@ trait JoinNameTrait
         ?string $foreignTable = null,
         ?string $localeTable = null,
         ?string $alias = null
-    ): void {
-        $this->joinModelName($query, $this, $foreignKey, $localKey, $foreignTable, $localeTable, $alias);
+    ): Builder|static {
+        return $this->joinModelName($query, $this, $foreignKey, $localKey, $foreignTable, $localeTable, $alias);
     }
 
     protected function joinModelName(
@@ -28,7 +28,7 @@ trait JoinNameTrait
         ?string $foreignTable = null,
         ?string $localeTable = null,
         ?string $alias = null
-    ): void {
+    ): Builder|static {
         $localKey = $localKey ?? $model->getKeyName();
         $localeTable = $localeTable ?? $model->getTable();
         $foreignKey = $foreignKey ?? $model->getForeignKey();
@@ -37,7 +37,7 @@ trait JoinNameTrait
         $tableName = is_null($alias) ? $foreignTable : $alias;
         $table = $foreignTable . (is_null($alias) ? '' : sprintf(' as %s', $alias));
 
-        $query->leftJoin($table, function (JoinClause $join) use ($foreignKey, $localeTable, $localKey, $tableName) {
+        return $query->leftJoin($table, function (JoinClause $join) use ($foreignKey, $localeTable, $localKey, $tableName) {
             $first = $this->printTableColumn($tableName, $foreignKey);
             $second = $this->printTableColumn($localeTable, $localKey);
             $column = $this->printTableColumn($tableName, LocaleConfig::foreignColumnName());
