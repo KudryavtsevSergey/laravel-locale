@@ -27,9 +27,9 @@ After updating composer, add the service provider to the ```providers``` array i
 ```
 
 And add alias:
+
 ```php
 [
-// TODO
     'Locale' => Sun\Locale\Facade::class,
 ];
 ```

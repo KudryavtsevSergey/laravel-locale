@@ -2,7 +2,7 @@
 
 namespace Sun\Locale;
 
-use App;
+use Illuminate\Support\Facades\App;
 
 class LocaleConfig
 {

@@ -37,7 +37,9 @@ trait JoinNameTrait
         $tableName = is_null($alias) ? $foreignTable : $alias;
         $table = $foreignTable . (is_null($alias) ? '' : sprintf(' as %s', $alias));
 
-        return $query->leftJoin($table, function (JoinClause $join) use ($foreignKey, $localeTable, $localKey, $tableName) {
+        return $query->leftJoin($table, function (
+            JoinClause $join
+        ) use ($foreignKey, $localeTable, $localKey, $tableName) {
             $first = $this->printTableColumn($tableName, $foreignKey);
             $second = $this->printTableColumn($localeTable, $localKey);
             $column = $this->printTableColumn($tableName, LocaleConfig::foreignColumnName());
