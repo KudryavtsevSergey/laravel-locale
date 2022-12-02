@@ -34,8 +34,8 @@ trait JoinNameTrait
         $foreignKey = $foreignKey ?? $model->getForeignKey();
         $foreignTable = $foreignTable ?? $localeTable . LocaleConfig::tablePostfix();
 
-        $tableName = is_null($alias) ? $foreignTable : $alias;
-        $table = $foreignTable . (is_null($alias) ? '' : sprintf(' as %s', $alias));
+        $tableName = $alias === null ? $foreignTable : $alias;
+        $table = $foreignTable . ($alias === null ? '' : sprintf(' as %s', $alias));
 
         return $query->leftJoin($table, function (
             JoinClause $join
