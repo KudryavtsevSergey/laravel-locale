@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Sun\Locale\Migrations;
 
 use Illuminate\Support\Facades\Schema;
@@ -47,7 +49,7 @@ abstract class LocaleMigration extends Migration
     {
         Schema::create($this->getTableNameWithPostfix(), function (Blueprint $table): void {
             $this->addForeignField($table, $this->getTableForeignKeyName());
-            $table->string(LocaleConfig::foreignColumnName(), 2);
+            $table->string(LocaleConfig::FOREIGN_COLUMN_NAME, 2);
 
             $table->foreign($this->getTableForeignKeyName())
                 ->references($this->getTablePrimaryKeyName())
@@ -55,7 +57,7 @@ abstract class LocaleMigration extends Migration
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
 
-            $table->foreign(LocaleConfig::foreignColumnName())
+            $table->foreign(LocaleConfig::FOREIGN_COLUMN_NAME)
                 ->references('code')
                 ->on(LocaleConfig::tableName())
                 ->restrictOnDelete()
@@ -63,7 +65,7 @@ abstract class LocaleMigration extends Migration
 
             $table->primary([
                 $this->getTableForeignKeyName(),
-                LocaleConfig::foreignColumnName(),
+                LocaleConfig::FOREIGN_COLUMN_NAME,
             ], $this->getPrimaryName());
 
             $this->getLocaleTableFields($table);
@@ -81,7 +83,7 @@ abstract class LocaleMigration extends Migration
             $table->dropForeign(sprintf(
                 self::FOREIGN_FORMAT,
                 $this->getTableNameWithPostfix(),
-                LocaleConfig::foreignColumnName()
+                LocaleConfig::FOREIGN_COLUMN_NAME
             ));
         });
 

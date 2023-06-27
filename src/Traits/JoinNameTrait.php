@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Sun\Locale\Traits;
 
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use Illuminate\Database\Query\JoinClause;
 use Sun\Locale\LocaleConfig;
@@ -10,25 +13,27 @@ use Sun\Locale\LocaleConfig;
 trait JoinNameTrait
 {
     protected function joinName(
-        Builder $query,
+        EloquentBuilder $query,
         ?string $foreignKey = null,
         ?string $localKey = null,
         ?string $foreignTable = null,
         ?string $localeTable = null,
         ?string $alias = null
-    ): Builder|static {
-        return $this->joinModelName($query, $this, $foreignKey, $localKey, $foreignTable, $localeTable, $alias);
+    ): QueryBuilder|EloquentBuilder|static {
+        /** @var Eloquent $model */
+        $model = $this;
+        return $this->joinModelName($query, $model, $foreignKey, $localKey, $foreignTable, $localeTable, $alias);
     }
 
     protected function joinModelName(
-        Builder $query,
+        EloquentBuilder $query,
         Eloquent $model,
         ?string $foreignKey = null,
         ?string $localKey = null,
         ?string $foreignTable = null,
         ?string $localeTable = null,
         ?string $alias = null
-    ): Builder|static {
+    ): QueryBuilder|EloquentBuilder|static {
         $localKey = $localKey ?? $model->getKeyName();
         $localeTable = $localeTable ?? $model->getTable();
         $foreignKey = $foreignKey ?? $model->getForeignKey();
@@ -42,7 +47,7 @@ trait JoinNameTrait
         ) use ($foreignKey, $localeTable, $localKey, $tableName) {
             $first = $this->printTableColumn($tableName, $foreignKey);
             $second = $this->printTableColumn($localeTable, $localKey);
-            $column = $this->printTableColumn($tableName, LocaleConfig::foreignColumnName());
+            $column = $this->printTableColumn($tableName, LocaleConfig::FOREIGN_COLUMN_NAME);
 
             $join->on($first, '=', $second)
                 ->where($column, '=', LocaleConfig::getLocale());

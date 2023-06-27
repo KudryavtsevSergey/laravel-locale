@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Sun\Locale\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Sun\Locale\LocaleConfig;
 use Sun\Locale\Traits\JoinNameTrait;
@@ -12,15 +15,17 @@ trait LocaleableTrait
 
     public function existLocales(): bool
     {
-        return $this->allLocales()->exists();
+        /** @var Builder $query */
+        $query = $this->allLocales();
+        return $query->exists();
     }
 
-    public function createLocales($attributes = []): void
+    public function createLocales(array $attributes = []): void
     {
         $this->allLocales()->attach(LocaleConfig::getLocale(), $attributes);
     }
 
-    public function replaceLocales($attributes = []): void
+    public function replaceLocales(array $attributes = []): void
     {
         $this->deleteLocales();
         $this->createLocales($attributes);
@@ -39,7 +44,7 @@ trait LocaleableTrait
     private function locales(): BelongsToMany
     {
         return $this->allLocales()
-            ->wherePivot(LocaleConfig::foreignColumnName(), '=', LocaleConfig::getLocale());
+            ->wherePivot(LocaleConfig::FOREIGN_COLUMN_NAME, '=', LocaleConfig::getLocale());
     }
 
     private function allLocales(): BelongsToMany
@@ -48,7 +53,7 @@ trait LocaleableTrait
             Locale::class,
             sprintf('%s%s', $this->getTable(), LocaleConfig::tablePostfix()),
             $this->getForeignKey(),
-            LocaleConfig::foreignColumnName()
+            LocaleConfig::FOREIGN_COLUMN_NAME
         );
     }
 }

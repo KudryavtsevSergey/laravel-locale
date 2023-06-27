@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -9,7 +11,7 @@ class CreateLocaleTable extends Migration
 {
     public function up(): void
     {
-        Schema::create(LocaleConfig::tableName(), function (Blueprint $table) {
+        Schema::create(LocaleConfig::tableName(), function (Blueprint $table): void {
             $table->string('code', 2)->primary();
             $table->string('country', 2)->unique();
             $table->string('name')->unique();

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Sun\Locale\Scopes;
 
 use Illuminate\Database\Eloquent\Scope;
