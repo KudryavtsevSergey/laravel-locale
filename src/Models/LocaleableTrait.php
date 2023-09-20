@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Sun\Locale\Models;
 
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Sun\Locale\LocaleConfig;
 use Sun\Locale\Traits\JoinNameTrait;
