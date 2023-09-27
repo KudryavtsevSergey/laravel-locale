@@ -23,21 +23,29 @@ trait LocaleableTrait
     public function createLocales(array $attributes = []): void
     {
         $this->allLocales()->attach(LocaleConfig::getLocale(), $attributes);
+        foreach ($attributes as $key => $value) {
+            $this->{$key} = $value;
+        }
     }
 
     public function replaceLocales(array $attributes = []): void
     {
         $this->deleteLocales();
         $this->createLocales($attributes);
+        foreach ($attributes as $key => $value) {
+            $this->{$key} = $value;
+        }
     }
 
     public function deleteLocales(): int
     {
+        // TODO: remove locale attributes from model
         return $this->locales()->detach();
     }
 
     public function deleteAllLocales(): int
     {
+        // TODO: remove locale attributes from model
         return $this->allLocales()->detach();
     }
 
