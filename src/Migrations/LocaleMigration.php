@@ -11,8 +11,6 @@ use Sun\Locale\LocaleConfig;
 
 abstract class LocaleMigration extends Migration
 {
-    private const FOREIGN_FORMAT = '%s_%s_foreign';
-
     protected abstract function getTableName(): string;
 
     protected function getTablePrimaryKeyName(): string
@@ -74,19 +72,6 @@ abstract class LocaleMigration extends Migration
 
     public function down(): void
     {
-        Schema::table($this->getTableNameWithPostfix(), function (Blueprint $table): void {
-            $table->dropForeign(sprintf(
-                self::FOREIGN_FORMAT,
-                $this->getTableNameWithPostfix(),
-                $this->getTableForeignKeyName()
-            ));
-            $table->dropForeign(sprintf(
-                self::FOREIGN_FORMAT,
-                $this->getTableNameWithPostfix(),
-                LocaleConfig::FOREIGN_COLUMN_NAME
-            ));
-        });
-
         Schema::dropIfExists($this->getTableNameWithPostfix());
     }
 }
